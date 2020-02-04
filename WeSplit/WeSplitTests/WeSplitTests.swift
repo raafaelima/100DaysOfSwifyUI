@@ -20,6 +20,9 @@ class WeSplitTests: XCTestCase {
     }
 
     func testExample() {
+        let contentView = ContentView()
+        XCTAssertEqual(contentView.totalPerPerson(), 0, "expected one plus one to equal two")
+        XCTAssertEqual(contentView.grandTotal(), 0, "expected one plus one to equal two")
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
     }

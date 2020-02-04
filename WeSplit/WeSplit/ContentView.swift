@@ -11,38 +11,19 @@ import SwiftUI
 import SwiftUI
 
 struct ContentView: View {
+
     @State private var checkAmount = ""
     @State private var numberOfPeople = 2
     @State private var tipPercentage = 2
     let tipPercentages = [0, 5, 10, 15, 20, 25]
-    
-    var totalPerPerson: Double {
-        let peopleCount = Double(numberOfPeople + 2)
-        let tipSelection = Double(tipPercentages[tipPercentage])
-        let orderAmount = Double(checkAmount) ?? 0
-        
-        let tipValue = orderAmount / 100 * tipSelection
-        let grandTotal = orderAmount + tipValue
-        let amountPerPerson = grandTotal / peopleCount
-        
-        return amountPerPerson
-    }
-    
-    var grandTotal: Double {
-        let tipSelection = Double(tipPercentages[tipPercentage])
-        let orderAmount = Double(checkAmount) ?? 0
-        
-        let tipValue = orderAmount / 100 * tipSelection
-        return orderAmount + tipValue
-    }
-    
+
     var body: some View {
         NavigationView {
             Form {
                 Section {
                     TextField("Amount", text: $checkAmount)
                         .keyboardType(.decimalPad)
-                    
+
                     Picker("Number of people", selection: $numberOfPeople) {
                         ForEach(2 ..< 100) { people in
                             Text("\(people) people")
@@ -58,14 +39,27 @@ struct ContentView: View {
                     .pickerStyle(SegmentedPickerStyle())
                 }
                 Section(header: Text("Amount per person")) {
-                    Text("$\(totalPerPerson, specifier: "%.2f")")
+                    Text("$\(totalPerPerson(), specifier: "%.2f")")
                 }
                 Section(header: Text("Total Amount")) {
-                    Text("$\(grandTotal, specifier: "%.2f")")
+                    Text("$\(grandTotal(), specifier: "%.2f")")
                 }
             }
             .navigationBarTitle("WeSplit")
         }
+    }
+
+    public func totalPerPerson() -> Double {
+        let peopleCount = Double(numberOfPeople + 2)
+        return grandTotal() / peopleCount
+    }
+
+    public func grandTotal() -> Double {
+        let tipSelection = Double(tipPercentages[tipPercentage])
+        let orderAmount = Double(checkAmount) ?? 0
+
+        let tipValue = orderAmount / 100 * tipSelection
+        return orderAmount + tipValue
     }
 }
 
